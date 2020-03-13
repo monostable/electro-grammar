@@ -73,24 +73,29 @@ describe('SMD Capacitors', () => {
     assert(c.type === 'capacitor')
     assert(c.capacitance === 100e-9, 'capacitance is wrong')
     assert(c.size === '0603', 'size is wrong')
+    assert(c.unmatched.join(' ') === 'kajdlkja alkdjlkajd')
   })
   it('ignores extra words 2', () => {
     const c = parse('adjalkjd 100nF akjdlkjda 0603 kajdlkja alkdjlkajd')
     assert(c.type === 'capacitor')
     assert(c.capacitance === 100e-9, 'capacitance is wrong')
     assert(c.size === '0603', 'size is wrong')
+    assert(c.unmatched.join(' ') === 'adjalkjd akjdlkjda kajdlkja alkdjlkajd')
   })
   it('ignores extra words 3', () => {
     const c = parse('capacitor 100nF 0603, warehouse 5')
     assert(c.type === 'capacitor')
     assert(c.capacitance === 100e-9, 'capacitance is wrong')
     assert(c.size === '0603', 'size is wrong')
+    // maybe should be `, warehouse 5`
+    assert(c.unmatched.join(' ') === 'warehouse')
   })
   it('ignores extra words 4', () => {
     const c = parse('adjalkjd 0603 akjdlkjda 100nF kajdlkja alkdjlkajd')
     assert(c.type === 'capacitor')
     assert(c.capacitance === 100e-9, 'capacitance is wrong')
     assert(c.size === '0603', 'size is wrong')
+    assert(c.unmatched.join(' ') === 'adjalkjd akjdlkjda kajdlkja alkdjlkajd')
   })
   it('parses 1n5F', () => {
     const c = parse('1n5F 0603 X7R')
